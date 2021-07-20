@@ -26,6 +26,7 @@ function clear() {
   let gridItems = document.querySelectorAll("#container>*");
   gridItems.forEach((gi) => {
     gi.style.backgroundColor = "white";
+    gi.style.filter="";
   });
 }
 
