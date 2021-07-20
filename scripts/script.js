@@ -3,6 +3,7 @@ setGridItems(4);
 container.style.display = "grid";
 container.style.width = "960px";
 container.style.height = "85vh";
+container.style.backgroundColor = "white";
 
 const body = document.querySelector("body");
 const button = document.createElement("button");
@@ -43,24 +44,43 @@ function setGridItems(sideBoxes) {
 
   for (let i = 0; i < sideBoxes ** 2; i++) {
     const newDivChild = document.createElement("div");
+    newDivChild.style.backgroundColor = "white";
     container.appendChild(newDivChild);
   }
   let gridItems = document.querySelectorAll("#container>*");
+  let currentColor;
   gridItems.forEach((item) => {
-    item.style.transition = "all 0.5s ease-out";
-    item.addEventListener(
-      "mouseenter",
-      (e) => (e.target.style.backgroundColor = "gray")
-    );
-    item.addEventListener(
-      "mouseleave",
-      (e) => (e.target.style.backgroundColor = "black")
-    );
+    item.style.transition = "all 0.35s ease-out";
+    item.addEventListener("mouseenter", (e) => {
+      currentColor = e.target.style.backgroundColor;
+      if (currentColor === "white") {
+        let hue = getRandomColor();
+        e.target.style.backgroundColor = `hsl(${hue},100%,50%`;
+      } else {
+        e.target.style.backgroundColor = currentColor;
+        readBrightness(e);
+      }
+    });
   });
 }
 
 function removeChilds(parent) {
   while (parent.lastChild) {
     parent.removeChild(parent.lastChild);
+  }
+}
+
+function getRandomColor() {
+  return Math.floor(Math.random() * 360);
+}
+
+function readBrightness(e) {
+  let brightness = e.target.style.filter;
+  if (brightness === "") {
+    e.target.style.filter = "brightness(0.9)";
+  } else {
+    let value = brightness.slice(11, 14);
+    value = +value - 0.1;
+    e.target.style.filter = `brightness(${value})`;
   }
 }
